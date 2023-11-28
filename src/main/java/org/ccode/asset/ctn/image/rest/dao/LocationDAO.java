@@ -16,26 +16,7 @@ public class LocationDAO {
 	public static Connection connection;
 
 	public void connect() {
-		String url = "jdbc:postgresql://localhost:5432/ctn";
-		String user = "postgres";
-		String password = "postgres";
-		try {
-			// Register the PostgreSQL driver
-			Class.forName("org.postgresql.Driver");
-
-			// Create a connection to the database
-			connection = DriverManager.getConnection(url, user, password);
-
-			if (connection != null) {
-				System.out.println("Connected to the PostgreSQL database!");
-
-			}
-		} catch (ClassNotFoundException e) {
-			System.out.println("PostgreSQL JDBC driver not found.");
-		} catch (SQLException e) {
-			System.out.println("Connection failed. Check the connection parameters.");
-			e.printStackTrace();
-		}
+		connection = DatabaseSessionManager.getInstance().getSession();
 	}
 
 	public void displayClassPath() {
@@ -72,7 +53,8 @@ public class LocationDAO {
 	public void addLocation(double celestialLongitude, double celestialLatitude) {
 		connect();
 		Statement statement;
-		String query = "INSERT INTO CelestialLocation (celestialLongitude, celestialLatitude) values (" + celestialLongitude + ", " + celestialLatitude + ")";
+		String query = "INSERT INTO CelestialLocation (celestialLongitude, celestialLatitude) values ("
+				+ celestialLongitude + ", " + celestialLatitude + ")";
 		System.out.println(query);
 		try {
 			statement = connection.createStatement();
@@ -85,7 +67,8 @@ public class LocationDAO {
 	public void updateLocation(int id, double celestialLongitude, double celestialLatitude) {
 		connect();
 		Statement statement;
-		String query = "Update CelestialLocation SET celestialLongitude = " + celestialLongitude + ", celestialLatitude = " + celestialLatitude + " where id = " + id;
+		String query = "Update CelestialLocation SET celestialLongitude = " + celestialLongitude
+				+ ", celestialLatitude = " + celestialLatitude + " where id = " + id;
 		try {
 			statement = connection.createStatement();
 			statement.executeUpdate(query);
@@ -109,7 +92,8 @@ public class LocationDAO {
 
 	public void printLocations(List<Location> LocationsList) {
 		for (Location t : LocationsList) {
-			System.out.println(" ID:" + t.getId() + "; CelestialLongitude:"	+ t.getCelestialLongitude() + ";  CelestialLatitude:" + t.getCelestialLatitude());
+			System.out.println(" ID:" + t.getId() + "; CelestialLongitude:" + t.getCelestialLongitude()
+					+ ";  CelestialLatitude:" + t.getCelestialLatitude());
 		}
 	}
 
@@ -120,8 +104,6 @@ public class LocationDAO {
 		dao.deleteLocation(6);
 		dao.addLocation(2.2, 2.2);
 		dao.printLocations(dao.readlocationList());
-
-		
 
 	}
 

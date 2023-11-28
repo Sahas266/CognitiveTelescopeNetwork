@@ -17,27 +17,9 @@ public class CelestialEventDAO {
 	public static Connection connection;
 
 	public void connect() {
-		String url = "jdbc:postgresql://localhost:5432/ctn";
-		String user = "postgres";
-		String password = "postgres";
-		try {
-			// Register the PostgreSQL driver
-			Class.forName("org.postgresql.Driver");
-
-			// Create a connection to the database
-			connection = DriverManager.getConnection(url, user, password);
-
-			if (connection != null) {
-				System.out.println("Connected to the PostgreSQL database!");
-
-			}
-		} catch (ClassNotFoundException e) {
-			System.out.println("PostgreSQL JDBC driver not found.");
-		} catch (SQLException e) {
-			System.out.println("Connection failed. Check the connection parameters.");
-			e.printStackTrace();
-		}
+		connection = DatabaseSessionManager.getInstance().getSession();
 	}
+	
 	public void displayClassPath() {
 		String classpath = System.getProperty("java.class.path");
 		String[] classpathEntries = classpath.split(File.pathSeparator);
