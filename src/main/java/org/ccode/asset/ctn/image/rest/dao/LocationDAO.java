@@ -29,6 +29,8 @@ public class LocationDAO {
 
 	public List<Location> readlocationList() {
 		// Retrieve data from the database.
+		ConstantsManager.initialize();
+		ConstantsManager.loadAppProperties();
 		connect();
 		Statement statement;
 		try {
